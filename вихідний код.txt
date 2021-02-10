@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+          td select,
+    td input {
+      width: 200px;
+      height:30px;
+border: 3px #75C038;
+box-shadow: 0px 0px 2px 2px #75C038;
+  font-family: 'Montserrat', sans-serif;
+  font-size:23px;
+      text-align:center;
+      /*margin-bottom: 20px;*/
+     
+    }
+select {
+	text-align: center;
+	text-align-last: center;
+}
+option {
+	text-align: center;
+}
+td {
+      line-height: 3.2;
+}
+    #diagram td {
+      vertical-align: bottom;
+      text-align: center;
+      padding: 18px;
+    }
+
+    #diagram div {
+      margin: 38px;
+    }
+  .flex-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.calculator-content {
+    width: 100%;
+    max-width: 950px;
+    padding-top: 100px;
+}
+html, body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #F9FAFC;
+  font-size: 30px;
+}
+.calculator-content-title {
+    padding-bottom: 14px;
+    border-bottom: 2px solid #E4E6EE;
+}
+h1, h2 {
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 37px;
+    color: #071124;
+}
+.calculator-content-body-left, .calculator-content-body-right {
+    width: 50%;
+    border-right: 2px solid #E4E6EE;
+    padding-top: 40px;
+  
+}
+
+.calculator-content-body-right {
+    padding-right: 0;
+    padding-left: 30px;
+    border-right: none;
+}
+.calculator-content-body {
+    display: flex;
+}
+
+.input-wrapper {
+    margin-bottom: 43px;
+}
+.calculator-content-body-left-inputs {
+    margin-bottom: 120px;
+}
+.hryvnia{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border: 2px solid #E4E6EE;
+    height: 50px;
+  margin-bottom: 20px;}
+.dollar{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border: 2px solid #E4E6EE;
+    height: 50px;
+  margin-bottom: 20px;
+}
+.euro{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border: 2px solid #E4E6EE;
+    height: 50px;
+  margin-bottom: 20px;}
+
+
+  </style>
+</head>
+
+<body>
+<div class="flex-wrapper">
+        <div class="calculator-content">
+            <div class="calculator-content-title">
+                <h1>Депозитний калькулятор</h1>
+            </div>
+          <div class="calculator-content-body">
+            <div class="calculator-content-body-left">
+              <div class="calculator-content-body-left-inputs">
+  <form name="calculator">
+    <table>
+      <tr>
+        <td>Сума депозиту</td>
+        <td>
+          <input name="money" type="number" value="10000" required>
+        </td>
+      </tr>
+      <tr>
+        <td>Кількість місяців</td>
+        <td>
+          <select name="months">
+            <option value="1">1 </option>
+            <option value="2">2 </option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </td>
+      </tr>
+<tr>
+       <td>Ставка (на рік)</td>
+  <td>
+         <input name="interest" type="number" value="5"required>
+</div>
+      </td>
+</tr>
+    </table>
+              </div>
+            <div class="calculator-content-title">
+                        <h2>Відсотки валют</h2>
+                    </div>
+            <div class="hryvnia">
+                        <td>Гривня</td>
+              <div class=>7-8%</div>
+                    </div>
+                        <div class="dollar">
+<td>Долар</td>
+              <div class=>0,25-1%</div>
+                    </div>
+            <div class="euro">
+                        <td>Євро</td>
+              <div class=>0,01%</div>
+                    </div>
+    </div>
+
+
+  </form>
+<div class="calculator-content-body-right">
+  <table id="diagram">
+    <tr>
+      <th>Вклав:</th>
+      <th>Отримаю:</th>
+    </tr>
+    <tr>
+      <th id="money-before"></th>
+      <th id="money-after"></th>
+    </tr>
+    <td>
+      <div style="background: #D4D1D1;width:95px;height:230px"></div>
+    </td>
+    <td>
+      <div style="background: #75C038;width:95px;height:0" id="height-after"></div>
+    </td>
+    
+  </table>
+  </div>
+          </div>
+  </div>
+  </div>
+
+
+  <script>
+ let form = document.forms.calculator;
+
+    form.money.oninput = calculate;
+    form.months.onchange = calculate;
+    form.interest.oninput = calculate;
+ 
+    function calculate() {
+      let initial = +form.money.value;
+      if (!initial) return;
+
+      let interest = form.interest.value * 0.01;
+
+      if (!interest) return;
+
+      let years = form.months.value / 12;
+      if (!years) return;
+
+      let result = Math.round(initial * (1 + interest  * years));
+      
+      let height = result / form.money.value * 230 + 'px';
+      document.getElementById('height-after').style.height = height;
+      document.getElementById('money-before').innerHTML = form.money.value;
+      document.getElementById('money-after').innerHTML = result;
+    }
+
+    calculate();
+  </script>
+
+
+</body>
+</html>
